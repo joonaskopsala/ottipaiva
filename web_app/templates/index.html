@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ottipäivä</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Ottipäivä</h1>
+        <form method="POST">
+            <input type="text" name="city" placeholder="Enter city" required>
+            <button type="submit">Get Forecast</button>
+        </form>
+        {% if prediction %}
+            <div class="result">
+                <img src="{{ url_for('static', filename='icons/' + fisherman_icon) }}" alt="Fisherman Icon" width="100">
+                <h2>{{ prediction }}</h2>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
