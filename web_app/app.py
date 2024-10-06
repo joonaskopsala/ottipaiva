@@ -1,5 +1,8 @@
 from flask import Flask, jsonify, render_template, request
 import requests
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from config import OPENWEATHER_API_KEY
 
 app = Flask(__name__)
@@ -22,22 +25,22 @@ def predict_fishing_success(weather_data):
 
     if 15 <= temp <= 25 and wind_speed < 10 and pressure > 1010 and humidity < 80:
         return {
-            "text": "Great conditions for fishing! Temperature, wind, and pressure are all ideal.",
+            "text": "Loistavat olosuhteet kalastukseen! Lämpötila, tuuli ja ilmanpaine ovat kaikki ihanteelliset.",
             "icon": "happy.png"
         }
     elif (10 <= temp < 15 or 25 < temp <= 30) and wind_speed < 15 and pressure > 1005:
         return {
-            "text": "Good conditions for fishing, but keep an eye on temperature and wind.",
+            "text": "Hyvät olosuhteet kalastukseen, mutta seuraa lämpötilaa ja tuulta.",
             "icon": "happy.png"
         }
     elif temp < 10 or temp > 30 or wind_speed > 15:
         return {
-            "text": "Poor conditions for fishing due to extreme temperatures or high winds.",
+            "text": "Huonot olosuhteet kalastukselle äärimmäisten lämpötilojen tai kovan tuulen takia.",
             "icon": "sad.png"
         }
     else:
         return {
-            "text": "Conditions are average. You might still catch some fish, but it's not ideal.",
+            "text": "Olosuhteet ovat keskinkertaiset. Voit silti saada kalaa, mutta ei ole ihanteellista.",
             "icon": "neutral.png"
         }
 
@@ -55,10 +58,10 @@ def index():
             prediction = prediction_data["text"]
             fisherman_icon = prediction_data["icon"]
         else:
-            prediction = "City not found. Please try again."
+            prediction = "Kaupunkia ei löytynyt. Yritä uudelleen."
             fisherman_icon = "sad.png"
 
-    return render_template("index.html", prediction=prediction, fisherman_icon=fisherman_icon)
+    return render_template("index.html", prediction=prediction, fisherman_icon=fisherman_icon, location=city)
 
 if __name__ == "__main__":
     app.run(debug=True)

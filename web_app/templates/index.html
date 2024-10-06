@@ -10,15 +10,22 @@
     <div class="container">
         <h1>Ottipäivä</h1>
         <form method="POST">
-            <input type="text" name="city" placeholder="Enter city" required>
-            <button type="submit">Get Forecast</button>
+            <input type="text" name="city" placeholder="Syötä kaupunki tai maa" required>
+            <button type="submit">Onko ottipäivä?</button>
         </form>
         {% if prediction %}
             <div class="result">
+                <h3>{{location}}</h3>
                 <img src="{{ url_for('static', filename='icons/' + fisherman_icon) }}" alt="Fisherman Icon" width="100">
                 <h2>{{ prediction }}</h2>
             </div>
         {% endif %}
     </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>Ottipäivä 2024 all rights reserved</p>
+        </div>
+    </footer>
 </body>
 </html>
