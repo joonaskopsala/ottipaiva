@@ -7,25 +7,30 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Ottipäivä</h1>
-        <form method="POST">
-            <input type="text" name="city" placeholder="Syötä kaupunki tai maa" required>
-            <button type="submit">Onko ottipäivä?</button>
-        </form>
-        {% if prediction %}
-            <div class="result">
-                <h3>{{location}}</h3>
-                <img src="{{ url_for('static', filename='icons/' + fisherman_icon) }}" alt="Fisherman Icon" width="100">
-                <h2>{{ prediction }}</h2>
+    <h1>Ottipäivä</h1>
+    
+    <form method="POST" action="/">
+        <label for="city">Syötä kaupungin nimi:</label>
+        <input type="text" id="city" name="city" required>
+        <button type="submit">Onko ottipäivä?</button>
+    </form>
+
+    <h2>📍 {{ location }}</h2>
+    
+    <div class="forecast-container">
+        {% for day in forecast %}
+            <div class="forecast-item">
+                <p>{{ day.date | dateformat }}</p>
+                <p>Temperature: {{ day.temp }} °C</p>
+                <p>Wind Speed: {{ day.wind_speed }} m/s</p>
+                <p>{{ day.prediction }}</p>
+                <img src="{{ url_for('static', filename='icons/' + day.fisherman_icon) }}" alt="Fishing Success">
             </div>
-        {% endif %}
+        {% endfor %}
     </div>
 
     <footer>
-        <div class="footer-content">
-            <p>Ottipäivä 2024 all rights reserved</p>
-        </div>
+        <p>Created with ❤️ by <a href="https://github.com/joonaskopsala">joonas</a></p>
     </footer>
 </body>
 </html>
