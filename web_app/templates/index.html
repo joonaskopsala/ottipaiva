@@ -16,18 +16,20 @@
     </form>
 
     <h2>📍 {{ location }}</h2>
-    
-    <div class="forecast-container">
-        {% for day in forecast %}
-            <div class="forecast-item">
-                <p>{{ day.date | dateformat }}</p>
-                <p>Temperature: {{ day.temp }} °C</p>
-                <p>Wind Speed: {{ day.wind_speed }} m/s</p>
-                <p>{{ day.prediction }}</p>
-                <img src="{{ url_for('static', filename='icons/' + day.fisherman_icon) }}" alt="Fishing Success">
-            </div>
-        {% endfor %}
-    </div>
+
+    {% for day in filteredData %}
+        <div class="forecast-container">
+            {% for obj in day %}
+                <div class="forecast-item">
+                    <p>{{ obj.date | dateformat }}</p>
+                    <p>Temperature: {{ obj.temp }} °C</p>
+                    <p>Wind Speed: {{ obj.wind_speed }} m/s</p>
+                    <p>{{ obj.prediction }}</p>
+                    <img src="{{ url_for('static', filename='icons/' + obj.fisherman_icon) }}" alt="Fishing Success">
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
 
     <footer>
         <p>Created with ❤️ by <a href="https://github.com/joonaskopsala">joonas</a></p>

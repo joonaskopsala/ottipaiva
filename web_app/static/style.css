@@ -53,6 +53,7 @@ button:hover {
 .forecast-container {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: row;
     justify-content: center;
     margin-top: 20px;
 }
