@@ -46,18 +46,19 @@ def process_forecast_data(weather_data):
 
 def filter_forecast_data(forecast):
     today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-    day_ranges = [today + timedelta(days=i) for i in range(6)]
+    day_ranges = [(today + timedelta(days=i), today + timedelta(days=i+1) - timedelta(seconds=1)) for i in range(6)]
 
-    day_lists = [[] for _ in range(6)]
+    day_lists = [[] for _ in range(6)]  # One array for each day
 
     for obj in forecast:
         obj_date = datetime.fromtimestamp(obj['date'])
 
-        for i in range(5):
-            if day_ranges[i] <= obj_date < day_ranges[i + 1]:
+        for i in range(6):
+            start_day, end_day = day_ranges[i]
+            if start_day <= obj_date <= end_day:
                 day_lists[i].append(obj)
                 break
-            
+
     # Remove empty arrays
     day_lists = [day_list for day_list in day_lists if day_list]
 
