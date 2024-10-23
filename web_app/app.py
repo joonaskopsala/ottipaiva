@@ -9,11 +9,6 @@ from config import OPENWEATHER_API_KEY
 
 app = Flask(__name__)
 
-@app.template_filter('dateformat')
-def dateformat(value):
-    local_timezone = datetime.now().astimezone().tzinfo
-    return datetime.fromtimestamp(value, tz=timezone.utc).astimezone(local_timezone).strftime('%Y-%m-%d %H:%M')
-
 def get_weather_data(city_name):
     base_url = f"https://api.openweathermap.org/data/2.5/forecast?q={city_name}&appid={OPENWEATHER_API_KEY}&units=metric"
     try:
@@ -31,7 +26,7 @@ def index():
     city = ""
 
     if request.method == "POST":
-        city = request.form.get("city")
+        city = request.form.get("city").capitalize()
         weather_data = get_weather_data(city)
 
         if weather_data:

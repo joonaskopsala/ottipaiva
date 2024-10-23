@@ -17,6 +17,10 @@ h2 {
     margin: 20px 0;
 }
 
+h3 {
+    color: #2980b9;
+}
+
 form {
     margin: 20px auto;
     display: inline-block;
@@ -45,11 +49,17 @@ button:hover {
     background-color: #3498db;
 }
 
+.navigation {
+    margin-top: 2rem;
+}
+
 .forecast-display {
-    margin: 3rem 2rem 0rem 2rem;
-    align-content: center;
+    margin: 2rem 2rem 0rem 2rem;
+    align-items: center;
     display: flex;
     overflow: auto;
+    justify-content: center;
+    min-height: 20rem;
 }
 
 .forecast-item {

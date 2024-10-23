@@ -18,21 +18,22 @@
 
     <h2>📍 {{ location }}</h2>
 
-    <div class="navigation">
-        <button id="prev-day" onclick="changeDay(-1)">⬅️ Edellinen päivä</button>
-        <button id="next-day" onclick="changeDay(1)">Seuraava päivä ➡️</button>
-    </div>
+    <h3 class="day">{{ day }}</h3>
 
     <div id="forecast-display" class="forecast-display">
         {% for obj in filteredData[0] %}
             <div class="forecast-item">
-                <p>{{ obj.date | dateformat }}</p>
                 <p>Lämpötila: {{ obj.temp }} °C</p>
                 <p>Tuulen nopeus: {{ obj.wind_speed }} m/s</p>
                 <p>{{ obj.prediction }}</p>
                 <img src="{{ url_for('static', filename='icons/' + obj.fisherman_icon) }}" alt="Fishing Success">
             </div>
         {% endfor %}
+    </div>
+
+    <div class="navigation">
+        <button id="prev-day" onclick="changeDay(-1)">⬅️ Edellinen päivä</button>
+        <button id="next-day" onclick="changeDay(1)">Seuraava päivä ➡️</button>
     </div>
 
     <footer>
@@ -45,37 +46,66 @@
         const forecastData = JSON.parse('{{ filteredData | tojson | safe }}')
     
         if (!Array.isArray(forecastData) || forecastData.length === 0) {
-            console.error("Kävi virhe. Yritä uudelleen myöhemmin.");
+            console.error("Kävi virhe. Yritä uudelleen myöhemmin.")
         }
     
         function changeDay(direction) {
-            currentDay += direction;
-            if (currentDay < 0) currentDay = forecastData.length - 1; // Wrap to last day
-            if (currentDay >= forecastData.length) currentDay = 0;    // Wrap to first day
+            currentDay += direction
+            if (currentDay < 0) currentDay = forecastData.length - 1
+            if (currentDay >= forecastData.length) currentDay = 0
     
-            updateForecast();
+            updateNavigationButtons()
+            updateForecast()
         }
     
         function updateForecast() {
-            const forecastDisplay = document.getElementById("forecast-display");
-            forecastDisplay.innerHTML = '';
-    
+            const prevButton = document.getElementById("prev-day")
+            const nextButton = document.getElementById("next-day")
+            const forecastDisplay = document.getElementById("forecast-display")
+            forecastDisplay.innerHTML = ''
+
+            const dayElement = document.querySelector(".day")
+
             if (forecastData[currentDay]) {
+                prevButton.style.visibility = "visible"
+                nextButton.style.visibility = "visible"
+                const currentForecast = forecastData[currentDay][0];
+                const formattedDate = new Date(currentForecast.date * 1000).toLocaleDateString('fi-FI', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+
+                dayElement.innerHTML = formattedDate;
+
                 forecastData[currentDay].forEach(item => {
                     forecastDisplay.innerHTML += `
                         <div class="forecast-item">
-                            <p>${new Date(item.date * 1000).toLocaleString('fi-FI', { dateStyle: 'short', timeStyle: 'short' })}</p>
-                            <p>Lämpötila: ${item.temp} °C</p>
-                            <p>Tuulen nopeus: ${item.wind_speed} m/s</p>
+                            <p>Lämpötila: ${Math.round(item.temp)} °C</p>
+                            <p>Tuulen nopeus: ${Math.round(item.wind_speed)} m/s</p>
                             <p>${item.prediction}</p>
                             <img src="/static/icons/${item.fisherman_icon}" alt="Fishing Success">
                         </div>
-                    `;
+                    `
                 });
+            } else {
+                prevButton.style.visibility = "hidden"
+                nextButton.style.visibility = "hidden"
+                forecastDisplay.innerHTML += `
+                    <div class="forecast-item">
+                        <p>Kaupunkia ei löytynyt 😪</p>
+                    </div>
+                `;
             }
         }
-    
-        updateForecast();
+
+        function updateNavigationButtons() {
+            const prevButton = document.getElementById("prev-day")
+            const nextButton = document.getElementById("next-day")
+
+            prevButton.style.visibility = currentDay === 0 ? 'hidden' : 'visible'
+
+            nextButton.style.visibility = currentDay === forecastData.length - 1 ? 'hidden' : 'visible'
+        }
+
+        updateNavigationButtons()
+        updateForecast()
     </script>    
 </body>
 </html>
