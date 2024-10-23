@@ -67,8 +67,6 @@
             const dayElement = document.querySelector(".day")
 
             if (forecastData[currentDay]) {
-                prevButton.style.visibility = "visible"
-                nextButton.style.visibility = "visible"
                 const currentForecast = forecastData[currentDay][0];
                 const formattedDate = new Date(currentForecast.date * 1000).toLocaleDateString('fi-FI', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
