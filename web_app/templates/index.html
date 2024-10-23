@@ -23,8 +23,7 @@
     <div id="forecast-display" class="forecast-display">
         {% for obj in filteredData[0] %}
             <div class="forecast-item">
-                <p>Lämpötila: {{ obj.temp }} °C</p>
-                <p>Tuulen nopeus: {{ obj.wind_speed }} m/s</p>
+                <p>💨: {{ obj.wind_speed }} m/s</p>
                 <p>{{ obj.prediction }}</p>
                 <img src="{{ url_for('static', filename='icons/' + obj.fisherman_icon) }}" alt="Fishing Success">
             </div>
@@ -75,8 +74,8 @@
                 forecastData[currentDay].forEach(item => {
                     forecastDisplay.innerHTML += `
                         <div class="forecast-item">
-                            <p>Lämpötila: ${Math.round(item.temp)} °C</p>
-                            <p>Tuulen nopeus: ${Math.round(item.wind_speed)} m/s</p>
+                            <p>🕓 ${(new Date(item.date * 1000).toLocaleTimeString('fi-FI', { hour: '2-digit', minute: '2-digit' })).replace(".",":")}</p>
+                            <p>💨: ${Math.round(item.wind_speed)} m/s</p>
                             <p>${item.prediction}</p>
                             <img src="/static/icons/${item.fisherman_icon}" alt="Fishing Success">
                         </div>
