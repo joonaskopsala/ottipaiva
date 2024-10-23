@@ -1,8 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, jsonify, render_template, request
 import requests
 import os
 import sys
-from datetime import datetime, timedelta, timezone
 from web_app.utils import process_forecast_data, filter_forecast_data
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from config import OPENWEATHER_API_KEY

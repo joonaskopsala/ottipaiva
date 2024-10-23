@@ -3,13 +3,22 @@ from datetime import datetime, timedelta
 def predict_fishing_success(weather_data):
     temp = weather_data['main']['temp']
     wind_speed = weather_data['wind']['speed']
+    pressure = weather_data['main']['pressure']
 
-    if 15 <= temp <= 25 and wind_speed < 10:
+    if pressure < 1000:
+        pressure_condition = "low"
+    elif 1000 <= pressure <= 1020:
+        pressure_condition = "average"
+    else:
+        pressure_condition = "high"
+
+    if (15 <= temp <= 25 and wind_speed < 10) and pressure_condition == "average":
         return {"text": "Loistavat olosuhteet kalastukseen!", "icon": "happy.png"}
-    elif (10 <= temp < 15 or 25 < temp <= 30) and wind_speed < 15:
+    elif ((10 <= temp < 15 or 25 < temp <= 30) and wind_speed < 15) or pressure_condition == "low":
         return {"text": "Hyvät olosuhteet kalastukseen.", "icon": "happy.png"}
-    elif temp < 10 or temp > 30 or wind_speed > 15:
+    elif temp < 10 or temp > 30 or wind_speed > 15 or pressure_condition == "high":
         return {"text": "Huonot olosuhteet kalastukselle.", "icon": "sad.png"}
+    
     return {"text": "Olosuhteet ovat keskinkertaiset.", "icon": "neutral.png"}
 
 def process_forecast_data(weather_data):
